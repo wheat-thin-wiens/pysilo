@@ -1,5 +1,4 @@
 import argparse
-from . import __version__
 
 def get_command_line_args():
     parser = argparse.ArgumentParser(
@@ -17,4 +16,17 @@ def get_command_line_args():
     parser.add_argument(
         '-d',
         '--default',
+        action = venv.exe_venv('Default')
     )
+    
+    parser.add_argument(
+        '-r',
+        '--register',
+    )
+    
+    parser.add_argument(
+        '-a',
+        '--add',
+    )
+
+    return parser.parse_args()

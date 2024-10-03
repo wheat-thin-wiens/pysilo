@@ -18,17 +18,25 @@ match ope:
         home = os.path.expanduser('~')
         file_path = os.path.join(home, '.config/pysilo')
 
-def get_path(data_name: str):
+def get_path(data_name: str) -> str:
     os.chdir(file_path)     # type: ignore
 
     try: 
         with open(file_name, 'r') as file:
             data = json.load(file)
             path = data.get(data_name)
-            return path
+
+            if path == 'Not Registered' or None:
+                raise ValueError
+
+        return path
 
     except ValueError:
-        return ''
+        return 'Not Registered'
+
+    except FileNotFoundError:
+        json_init()
+        return get_path(data_name)
 
 def write_path(new_data: dict):
     os.chdir(file_path)
@@ -45,7 +53,6 @@ def write_path(new_data: dict):
 
     with open(file_name, 'w') as file:
             json.dump(data, file, indent = 4)
-    return
 
 def json_init():
     if not os.path.isdir(file_path):
@@ -63,7 +70,6 @@ def json_init():
             json.dump({'Default': 'Not Registered'}, file, indent = 4)
     else:
         print(f"{file_name} found.")
-    return
 
 def reg_cur_venv():
     curd = sys.prefix

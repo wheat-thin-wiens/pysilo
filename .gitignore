@@ -1,1 +1,2 @@
-modules/scratch.py
+pysilo/scratch.py
+pysilo/__pycache__
