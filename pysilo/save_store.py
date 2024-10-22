@@ -26,9 +26,6 @@ def get_path(data_name: str) -> str:
             data = json.load(file)
             path = data.get(data_name)
 
-            if path == 'Not Registered' or None:
-                raise ValueError
-
         return path
 
     except ValueError:
@@ -67,13 +64,30 @@ def json_init():
         print(f"Creating {file_name}")
         open(file_name, 'x')
         with open(file_name, 'w') as file:
-            json.dump({'Default': 'Not Registered'}, file, indent = 4)
+            json.dump({}, file, indent = 4)
     else:
         print(f"{file_name} found.")
 
 def reg_cur_venv():
     curd = sys.prefix
-    name = input("Enter a name for this venv: > ")
+    name = input("Enter a name for this environment >  ")
     write_path({name: curd})
     return
 
+def reg_new_venv():
+    name = input("Enter a name for this environment >  ")
+    location = input('Enter the location of this environment > ')
+    write_path({name: location})
+
+def list_venvs():
+    os.chdir(file_path)
+    with open(file_name, 'r') as file:
+        data = json.load(file)
+
+    venvs = [key for key in data.keys()]
+    verbose_venvs = {}
+
+    for key, value in data.items():
+        verbose_venvs.update({key: value})
+    
+    return verbose_venvs
